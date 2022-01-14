@@ -5,17 +5,27 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  strong {
-    font-size: 24px;
-    color: #222222;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  a {
-    color: ${({ theme }) => theme.colors.primary.main};
-    text-decoration: none;
-    font-weight: bold;
-    border: 2px solid ${({ theme }) => theme.colors.primary.main};
-    padding: 8px 16px;
-    border-radius: 4px;
-  }
+    strong {
+      font-size: 24px;
+      color: #222222;
+    }
+
+    a {
+      color: ${({ theme }) => theme.colors.primary.main};
+      text-decoration: none;
+      font-weight: bold;
+      border: 2px solid ${({ theme }) => theme.colors.primary.main};
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease-in;
+
+      &:hover {
+        background: ${({ theme }) => theme.colors.primary.main};
+        color: #FFF;
+      }
+    }
 `;

@@ -13,16 +13,17 @@ export const InputSearchContainer = styled.div`
 
   input {
     width: 100%;
-    border-radius: 25px;
+    border-radius: 16px;
     border: none;
     background: #FFF;
     height: 50px;
     box-shadow: 0px 4px 10px rgba(0,0,0,0.04);
     outline: 0;
     padding: 0 16px;
+
+    &::placeholder {
+      color: #BCBCBC;
+    }
   }
 
-  &::placeholder {
-    color: #BCBCBC;
-  }
 `;
