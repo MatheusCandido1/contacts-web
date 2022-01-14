@@ -7,12 +7,14 @@ import {
 import arrow from '../../assets/icons/arrow.svg';
 import edit from '../../assets/icons/edit.svg';
 import trash from '../../assets/icons/trash.svg';
-import Modal from '../../components/Modal';
+import Loader from '../../components/Loader';
+// import Modal from '../../components/Modal';
 
 export default function Home() {
   return (
     <Container>
-      <Modal danger />
+      <Loader />
+      {/* <Modal danger /> */}
       <InputSearchContainer>
         <input type="text" placeholder="Pesquise contato.." />
       </InputSearchContainer>
