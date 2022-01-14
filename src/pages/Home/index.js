@@ -13,7 +13,12 @@ import trash from '../../assets/icons/trash.svg';
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrderBy] = useState('asc');
+
+  const filteredContacts = contacts.filter((contact) => (
+    contact.name.includes(searchTerm)
+  ));
 
   useEffect(() => {
     fetch(`http://localhost:3333/contacts?orderBy=${orderBy}`)
@@ -32,17 +37,26 @@ export default function Home() {
     );
   };
 
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <Container>
       {/* <Modal danger /> */}
       <InputSearchContainer>
-        <input type="text" placeholder="Pesquise contato.." />
+        <input
+          type="text"
+          value={searchTerm}
+          placeholder="Pesquise contato.."
+          onChange={handleSearchTermChange}
+        />
       </InputSearchContainer>
 
       <Header>
         <strong>
-          {contacts.length}
-          {contacts.length === 1 ? ' contatos' : ' contato'}
+          {filteredContacts.length}
+          {filteredContacts.length === 1 ? ' contatos' : ' contato'}
         </strong>
         <Link to="/create">Novo Contato</Link>
       </Header>
@@ -54,7 +68,7 @@ export default function Home() {
         </button>
       </ListHeader>
 
-      {contacts.map((contact) => (
+      {filteredContacts.map((contact) => (
         <Card key={contact.id}>
           <div className="info">
             <div className="contact-info">
