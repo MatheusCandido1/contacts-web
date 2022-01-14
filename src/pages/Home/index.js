@@ -1,30 +1,36 @@
 import { Link } from 'react-router-dom';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   Container, InputSearchContainer, Header, ListHeader, Card,
 } from './styles';
 
 import formatPhone from '../../utils/formatPhone';
+import delay from '../../utils/delay';
 import arrow from '../../assets/icons/arrow.svg';
 import edit from '../../assets/icons/edit.svg';
 import trash from '../../assets/icons/trash.svg';
-// import Modal from '../../components/Modal';
+import Loader from '../../components/Loader';
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrderBy] = useState('asc');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredContacts = contacts.filter((contact) => (
+  const filteredContacts = useMemo(() => contacts.filter((contact) => (
     contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-  ));
+  )), [contacts, searchTerm]);
 
   useEffect(() => {
-    fetch(`http://localhost:3333/contacts?orderBy=${orderBy}`)
+    setIsLoading(true);
+    fetch(`http://192.168.0.181:3333/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
+        await delay(500);
+
         const res = await response.json();
         setContacts(res);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log('erro', error);
@@ -43,7 +49,7 @@ export default function Home() {
 
   return (
     <Container>
-      {/* <Modal danger /> */}
+      {isLoading && <Loader />}
       <InputSearchContainer>
         <input
           type="text"
@@ -56,17 +62,19 @@ export default function Home() {
       <Header>
         <strong>
           {filteredContacts.length}
-          {filteredContacts.length === 1 ? ' contatos' : ' contato'}
+          {filteredContacts.length === 1 ? ' contato' : ' contatos'}
         </strong>
         <Link to="/create">Novo Contato</Link>
       </Header>
 
+      {filteredContacts.length > 0 && (
       <ListHeader orderBy={orderBy}>
         <button type="button" onClick={handleToggleOrderBy}>
           <span>Nome</span>
           <img src={arrow} alt="Arrow" />
         </button>
       </ListHeader>
+      )}
 
       {filteredContacts.map((contact) => (
         <Card key={contact.id}>
