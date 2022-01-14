@@ -40,7 +40,7 @@ export const Header = styled.div`
       font-weight: bold;
       border: 2px solid ${({ theme }) => theme.colors.primary.main};
       padding: 8px 16px;
-      border-radius: 8px;
+      border-radius: 4px;
       transition: all 0.2s ease-in;
 
       &:hover {
