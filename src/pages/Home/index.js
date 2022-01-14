@@ -16,7 +16,7 @@ export default function Home() {
   const [orderBy, setOrderBy] = useState('asc');
 
   useEffect(() => {
-    fetch('http://localhost:3333/contacts')
+    fetch(`http://localhost:3333/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const res = await response.json();
         setContacts(res);
@@ -24,20 +24,12 @@ export default function Home() {
       .catch((error) => {
         console.log('erro', error);
       });
-  }, []);
+  }, [orderBy]);
 
   const handleToggleOrderBy = () => {
-    const newOrder = orderBy === 'asc' ? 'desc' : 'asc';
-    setOrderBy(newOrder);
-
-    fetch(`http://localhost:3333/contacts?orderBy=${newOrder}`)
-      .then(async (response) => {
-        const res = await response.json();
-        setContacts(res);
-      })
-      .catch((error) => {
-        console.log('erro', error);
-      });
+    setOrderBy(
+      (prevState) => (prevState === 'asc' ? 'desc' : 'asc'),
+    );
   };
 
   return (
@@ -55,7 +47,7 @@ export default function Home() {
         <Link to="/create">Novo Contato</Link>
       </Header>
 
-      <ListHeader>
+      <ListHeader orderBy={orderBy}>
         <button type="button" onClick={handleToggleOrderBy}>
           <span>Nome</span>
           <img src={arrow} alt="Arrow" />
