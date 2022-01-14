@@ -58,6 +58,7 @@ export default function ContactForm({ buttonLabel }) {
 
       <FormGroup error={getErrorMessageByInputName('email')}>
         <Input
+          type="email"
           error={getErrorMessageByInputName('email')}
           placeholder="E-mail"
           value={email}
