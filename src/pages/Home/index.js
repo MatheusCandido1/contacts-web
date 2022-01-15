@@ -10,22 +10,14 @@ import {
   InputSearchContainer,
   Header,
   ListHeader,
-  Card,
-  ErrorContainer,
-  EmptyListContainer,
-  SearchNotFoundContainer,
 } from './styles';
 
-import Button from '../../components/Button';
-
-import formatPhone from '../../utils/formatPhone';
+import ErrorContainer from '../../components/Home/ErrorContainer';
+import EmptyListContainer from '../../components/Home/EmptyListContainer';
+import SearchNotFoundContainer from '../../components/Home/SearchNotFoundContainer';
+import ContactCard from '../../components/Home/ContactCard';
 
 import arrow from '../../assets/icons/arrow.svg';
-import edit from '../../assets/icons/edit.svg';
-import trash from '../../assets/icons/trash.svg';
-import sad from '../../assets/images/sad.svg';
-import emptyBox from '../../assets/images/empty-box.svg';
-import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 import Loader from '../../components/Loader';
 import ContactsService from '../../services/ContactsService';
@@ -110,39 +102,17 @@ export default function Home() {
       </Header>
 
       {hasError && (
-        <ErrorContainer>
-          <img src={sad} alt="Sad" />
-
-          <div className="details">
-
-            <strong>Ocorreu um erro ao exibir os seus contatos</strong>
-            <Button onClick={handleTryAgain} type="button">
-              Tentar Novamente
-            </Button>
-          </div>
-        </ErrorContainer>
+        <ErrorContainer onTryAgainButtonClick={handleTryAgain} />
       )}
 
       {!hasError && (
         <>
           {(contacts.length < 1 && !isLoading) && (
-            <EmptyListContainer>
-              <img src={emptyBox} alt="Empty Box" />
-              <p>
-                Você ainda não tem nenhum contato cadastrado!
-                Clique no botão <strong>”Novo contato”</strong>
-                à cima para cadastrar o seu primeiro!
-              </p>
-            </EmptyListContainer>
+            <EmptyListContainer />
           )}
 
           {(contacts.length > 0 && filteredContacts.length < 1) && (
-            <SearchNotFoundContainer>
-              <img src={magnifierQuestion} alt="Magnifier Question" />
-              <span>
-                Nenhum resultado foi encontrado para <strong>{searchTerm}</strong>
-              </span>
-            </SearchNotFoundContainer>
+            <SearchNotFoundContainer searchTerm={searchTerm} />
           )}
 
           {filteredContacts.length > 0 && (
@@ -155,25 +125,7 @@ export default function Home() {
           )}
 
           {filteredContacts.map((contact) => (
-            <Card key={contact.id}>
-              <div className="info">
-                <div className="contact-info">
-                  <strong>{contact.name}</strong>
-                  {contact.category?.name && <small>{contact.category.name}</small>}
-                </div>
-                <span>{contact.email}</span>
-                <span>{formatPhone(contact.phone)}</span>
-              </div>
-
-              <div className="actions">
-                <Link to={`/edit/${contact.id}`}>
-                  <img src={edit} alt="Edit" />
-                </Link>
-                <button type="button">
-                  <img src={trash} alt="Trash" />
-                </button>
-              </div>
-            </Card>
+            <ContactCard key={contact.id} contact={contact} />
           ))}
         </>
       )}
