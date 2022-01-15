@@ -6,11 +6,11 @@ import {
 } from './styles';
 
 import formatPhone from '../../utils/formatPhone';
-import delay from '../../utils/delay';
 import arrow from '../../assets/icons/arrow.svg';
 import edit from '../../assets/icons/edit.svg';
 import trash from '../../assets/icons/trash.svg';
 import Loader from '../../components/Loader';
+import ContactsService from '../../services/ContactsService';
 
 export default function Home() {
   const [contacts, setContacts] = useState([]);
@@ -23,18 +23,18 @@ export default function Home() {
   )), [contacts, searchTerm]);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`http://192.168.0.181:3333/contacts?orderBy=${orderBy}`)
-      .then(async (response) => {
-        await delay(500);
-
-        const res = await response.json();
-        setContacts(res);
+    async function getContacts() {
+      try {
+        setIsLoading(true);
+        const contactsList = await ContactsService.listContacts(orderBy);
+        setContacts(contactsList);
+      } catch (error) {
+        console.log('error', error);
+      } finally {
         setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log('erro', error);
-      });
+      }
+    }
+    getContacts();
   }, [orderBy]);
 
   const handleToggleOrderBy = () => {
@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
     <Container>
-      {isLoading && <Loader />}
+      <Loader isLoading={isLoading} />
       <InputSearchContainer>
         <input
           type="text"
@@ -81,7 +81,7 @@ export default function Home() {
           <div className="info">
             <div className="contact-info">
               <strong>{contact.name}</strong>
-              {contact.category.name && <small>{contact.category.name}</small>}
+              {contact.category?.name && <small>{contact.category.name}</small>}
             </div>
             <span>{contact.email}</span>
             <span>{formatPhone(contact.phone)}</span>
