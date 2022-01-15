@@ -12,6 +12,8 @@ import trash from '../../assets/icons/trash.svg';
 import Loader from '../../components/Loader';
 import ContactsService from '../../services/ContactsService';
 
+import APIError from '../../errors/APIError';
+
 export default function Home() {
   const [contacts, setContacts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,10 +28,14 @@ export default function Home() {
     async function getContacts() {
       try {
         setIsLoading(true);
+
         const contactsList = await ContactsService.listContacts(orderBy);
+
         setContacts(contactsList);
       } catch (error) {
-        console.log('error', error);
+        if (error instanceof APIError) {
+          console.log(error.message);
+        }
       } finally {
         setIsLoading(false);
       }
