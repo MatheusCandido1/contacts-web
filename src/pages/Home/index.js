@@ -34,6 +34,8 @@ export default function Home() {
   )), [contacts, searchTerm]);
 
   const getContacts = useCallback(async () => {
+    document.title = 'MyContacts - Home';
+
     try {
       setIsLoading(true);
 
