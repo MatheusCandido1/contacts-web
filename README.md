@@ -1,5 +1,6 @@
 # Getting Started with Create React App
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/eaad90d2-1926-4eaa-8380-f1b94b860ddb/deploy-status)](https://app.netlify.com/sites/mycontacts-web/deploys)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
