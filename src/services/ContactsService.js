@@ -2,7 +2,7 @@ import HttpClient from './utils/HttpClient';
 
 class ContactsService {
   constructor() {
-    this.httpClient = new HttpClient('http://localhost:3333');
+    this.httpClient = new HttpClient('https://mycontacts-server.herokuapp.com/api/v1');
   }
 
   async listContacts(orderBy = 'asc') {
